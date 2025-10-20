@@ -1,0 +1,36 @@
+body {
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.night-mode {
+  background-color: #212529;
+  color: #fff;
+}
+
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.rating span {
+  font-size: 22px;
+  cursor: pointer;
+  color: gray;
+}
+
+.rating span.active {
+  color: gold;
+}
+
+.hidden-text {
+  display: none;
+}
+
+.day-mode {
+  background-color: #f8f9fa;
+  color: #212529;
+}
