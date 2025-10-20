@@ -3,9 +3,14 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.day-mode {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
 .night-mode {
     background-color: #212529;
-    color: #fff;
+    color: #ffffff;
 }
 
 .card {
@@ -28,9 +33,4 @@ body {
 
 .hidden-text {
     display: none;
-}
-
-.day-mode {
-    background-color: #f8f9fa;
-    color: #212529;
 }

@@ -16,8 +16,10 @@ switch (true) {
             
 const modeBtn = document.getElementById("modeBtn");
 let isDay = true;
+
 modeBtn.addEventListener("click", () => {
     document.body.classList.toggle("night-mode");
+    document.body.classList.toggle("day-mode");
     isDay = !isDay;
     modeBtn.textContent = isDay ? "Switch to Night Mode" : "Switch to Day Mode";
 });
