@@ -80,7 +80,7 @@
             });
         }
         renderPetCards();
-        
+
         $(document).on('click', '.readBtn', function(){
         var $btn = $(this);
         var id = $btn.data('id');
@@ -91,6 +91,18 @@
         } else {
             $btn.text('Hide');
         }
+    });
+        $(document).on('click', '.rating span', function() {
+            const $star = $(this);
+            const $rating = $star.parent();
+            const id = $rating.data('id');
+            const index = $rating.find('span').index($star);
+            
+            $rating.find('span').removeClass('active');
+            $rating.find('span:lt(' + (index + 1) + ')').addClass('active');
+            pets[id].rating = index + 1;
+            
+            alert(`${pets[id].name} rated ${pets[id].rating} stars!`);
     });
     
     document.getElementById("showTimeBtn").addEventListener("click", () => {
