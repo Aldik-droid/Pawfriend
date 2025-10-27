@@ -49,29 +49,17 @@
     }
     renderPetCards();
     
-    function attachCardEvents() {
-        
-        document.querySelectorAll(".readBtn").forEach(btn => {
-            btn.addEventListener("click", function(e) {
-                const id = this.getAttribute("data-id");
-                const extra = document.getElementById(`extra${id}`);
-                if (extra) extra.classList.toggle("hidden-text");
-            });
-        });
-        
-        document.querySelectorAll(".rating").forEach((ratingDiv, index) => {
-            const stars = ratingDiv.querySelectorAll("span");
-            stars.forEach((star, i) => {
-                star.addEventListener("click", () => {
-                    stars.forEach(s => s.classList.remove("active"));
-                    for (let j = 0; j <= i; j++) stars[j].classList.add("active");
-                    pets[index].rating = i + 1;
-                    alert(`${pets[index].name} rated ${pets[index].rating} stars!`);
-                });
-            });
-        });
-    }
-    attachCardEvents();
+    $(document).on('click', '.readBtn', function(){
+        var $btn = $(this);
+        var id = $btn.data('id');
+        var $extra = $('#extra' + id);
+        $extra.toggleClass('hidden-text');
+        if ($extra.hasClass('hidden-text')) {
+            $btn.text('Read More');
+        } else {
+            $btn.text('Hide');
+        }
+    });
     
     document.getElementById("showTimeBtn").addEventListener("click", () => {
         document.getElementById("timeDisplay").textContent = new Date().toLocaleTimeString();
