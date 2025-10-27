@@ -231,6 +231,5 @@ $(function(){
     }
     
     lazyLoadImages();
-    
-    window.__PAWFRIEND.attachCardEvents();
+
 });
