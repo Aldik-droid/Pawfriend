@@ -52,10 +52,10 @@
     function attachCardEvents() {
         
         document.querySelectorAll(".readBtn").forEach(btn => {
-            btn.addEventListener("click", e => {
-                const id = e.target.getAttribute("data-id");
+            btn.addEventListener("click", function(e) {
+                const id = this.getAttribute("data-id");
                 const extra = document.getElementById(`extra${id}`);
-                extra && extra.classList.toggle("hidden-text");
+                if (extra) extra.classList.toggle("hidden-text");
             });
         });
         
