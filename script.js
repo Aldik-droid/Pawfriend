@@ -80,9 +80,8 @@
             });
         }
         renderPetCards();
-    
-
-    $(document).on('click', '.readBtn', function(){
+        
+        $(document).on('click', '.readBtn', function(){
         var $btn = $(this);
         var id = $btn.data('id');
         var $extra = $('#extra' + id);
@@ -104,7 +103,7 @@
         e.target.reset();
     });
     
-    window.__PAWFRIEND = { pets: pets, attachCardEvents: attachCardEvents, renderPetCards: renderPetCards };
+    window.__PAWFRIEND = { pets: pets, renderPetCards: renderPetCards };
 })();
 
 $(function(){
