@@ -18,37 +18,70 @@
     });
     
     const pets = [
-        { name: "Buddy", type: "Dog", desc: "Friendly and loyal.", extra: "Buddy is a 2 year old Labrador who loves running and playing fetch", rating: 0, img: "images/dog1.jpg" },
-        { name: "Misty", type: "Cat", desc: "Loves to sleep all day.", extra: "Misty is a calm and affectionate cat who enjoys warm sunlight and soft cushions", rating: 0, img: "images/cat1.jpg" },
-        { name: "Coco", type: "Parrot", desc: "Talkative and colorful.", extra: "Coco can repeat short phrases and loves to be around people", rating: 0, img: "images/parrot1.jpg" },
-        { name: "Nibbles", type: "Hamster", desc: "Cute and playful.", extra: "Nibbles is very active and enjoys running on his wheel at night", rating: 0, img: "images/hamster1.jpg" }
+        { 
+            name: "Buddy", 
+            type: "Dog", 
+            desc: "Friendly and loyal.", 
+            extra: "Buddy is a 2-year-old Labrador who loves running and playing fetch.",
+            img: "images/dog1.jpg",
+            rating: 0
+        },
+        
+        { 
+            name: "Misty", 
+            type: "Cat", 
+            desc: "Loves to sleep all day.", 
+            extra: "Misty is a calm and affectionate cat who enjoys warm sunlight and soft cushions.",
+            img: "images/cat1.jpg",
+            rating: 0
+            },
+            
+            { 
+            name: "Coco", 
+            type: "Parrot", 
+            desc: "Talkative and colorful.", 
+            extra: "Coco can repeat short phrases and loves to be around people.",
+            img: "images/parrot1.jpg",
+            rating: 0
+        },
+        
+        { 
+            name: "Nibbles", 
+            type: "Hamster",
+            desc: "Cute and playful.", 
+            extra: "Nibbles is very active and enjoys running on his wheel at night.",
+            img: "images/hamster1.jpg",
+            rating: 0
+        }
     ];
     
-    const petList = document.getElementById("petList");
-    function renderPetCards() {
-        petList.innerHTML = "";
-        pets.forEach((pet, index) => {
-            const div = document.createElement("div");
-            div.className = "col-md-3";
-            div.innerHTML = `
-            <div class="card p-3 text-center">
-            <img data-src="${pet.img}" class="img-fluid mb-2 lazy-img" alt="${pet.name}">
-            <h4 class="pet-name">${pet.name}</h4>
-            <p class="pet-type">${pet.type}</p>
-            <p class="pet-desc">${pet.desc}</p>
-            <p class="hidden-text" id="extra${index}">${pet.extra}</p>
-            <button class="btn btn-outline-primary readBtn" data-id="${index}">Read More</button>
-            <div class="rating mt-2" data-id="${index}">
-            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-            </div>
-            <button class="btn btn-success mt-2 adoptBtn">Adopt Me</button>
-            </div>
-            `;
-            petList.appendChild(div);
-        });
-    }
-    renderPetCards();
+    const petList = $("#petList");
     
+    function renderPetCards() {
+        petList.empty();
+        pets.forEach((pet, index) => {
+            const card = `
+                <div class="col-md-3">
+                <div class="card p-3 text-center shadow-sm">
+                <img src="${pet.img}" class="img-fluid mb-2" alt="${pet.name}">
+                <h4 class="pet-name">${pet.name}</h4>
+                <p class="pet-type">${pet.type}</p>
+                <p class="pet-desc">${pet.desc}</p>
+                <p class="hidden-text" id="extra${index}">${pet.extra}</p>
+                <button class="btn btn-outline-primary readBtn" data-id="${index}">Read More</button>
+                <div class="rating mt-2" data-id="${index}">
+                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+                <button class="btn btn-success mt-2 adoptBtn">Adopt Me</button>
+                </div>
+                </div>
+                `;
+                petList.append(card);
+            });
+        }
+        renderPetCards();
+    
+
     $(document).on('click', '.readBtn', function(){
         var $btn = $(this);
         var id = $btn.data('id');
