@@ -18,10 +18,10 @@
     });
     
     const pets = [
-        { name: "Buddy", type: "Dog", desc: "Friendly and loyal.", rating: 0, img: "images/dog1.jpg" },
-        { name: "Misty", type: "Cat", desc: "Loves to sleep all day.", rating: 0, img: "images/cat1.jpg" },
-        { name: "Coco", type: "Parrot", desc: "Talkative and colorful.", rating: 0, img: "images/parrot1.jpg" },
-        { name: "Nibbles", type: "Hamster", desc: "Cute and playful.", rating: 0, img: "images/hamster1.jpg" }
+        { name: "Buddy", type: "Dog", desc: "Friendly and loyal.", extra: "Buddy is a 2 year old Labrador who loves running and playing fetch", rating: 0, img: "images/dog1.jpg" },
+        { name: "Misty", type: "Cat", desc: "Loves to sleep all day.", extra: "Misty is a calm and affectionate cat who enjoys warm sunlight and soft cushions", rating: 0, img: "images/cat1.jpg" },
+        { name: "Coco", type: "Parrot", desc: "Talkative and colorful.", extra: "Coco can repeat short phrases and loves to be around people", rating: 0, img: "images/parrot1.jpg" },
+        { name: "Nibbles", type: "Hamster", desc: "Cute and playful.", extra: "Nibbles is very active and enjoys running on his wheel at night", rating: 0, img: "images/hamster1.jpg" }
     ];
     
     const petList = document.getElementById("petList");
@@ -36,7 +36,7 @@
             <h4 class="pet-name">${pet.name}</h4>
             <p class="pet-type">${pet.type}</p>
             <p class="pet-desc">${pet.desc}</p>
-            <p class="hidden-text" id="extra${index}">More info about ${pet.name}!</p>
+            <p class="hidden-text" id="extra${index}">${pet.extra}</p>
             <button class="btn btn-outline-primary readBtn" data-id="${index}">Read More</button>
             <div class="rating mt-2" data-id="${index}">
             <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
