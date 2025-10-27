@@ -1,92 +1,216 @@
-const greeting = document.getElementById("greeting");
-const hour = new Date().getHours();
-let greetMessage = "";
-
-switch (true) {
-    case (hour < 12):
-        greetMessage = "Good morning!";
-        break;
-        case (hour < 18):
-            greetMessage = "Good afternoon!";
-            break;
-            default:
-                greetMessage = "Good evening!";
-            }
-            greeting.textContent = greetMessage;
-            
-const modeBtn = document.getElementById("modeBtn");
-let isDay = true;
-
-modeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("night-mode");
-    document.body.classList.toggle("day-mode");
-    isDay = !isDay;
-    modeBtn.textContent = isDay ? "Switch to Night Mode" : "Switch to Day Mode";
-});
-
-const pets = [
-  { name: "Buddy", type: "Dog", desc: "Friendly and loyal.", rating: 0 },
-  { name: "Misty", type: "Cat", desc: "Loves to sleep all day.", rating: 0 },
-  { name: "Coco", type: "Parrot", desc: "Talkative and colorful.", rating: 0 },
-  { name: "Nibbles", type: "Hamster", desc: "Cute and playful.", rating: 0 }
-];
-
-const petList = document.getElementById("petList");
-pets.forEach((pet, index) => {
-    const div = document.createElement("div");
-    div.className = "col-md-3";
-    div.innerHTML = `
-    <div class="card p-3 text-center">
-    <h4>${pet.name}</h4>
-    <p>${pet.type}</p>
-    <p>${pet.desc}</p>
-    <p class="hidden-text" id="extra${index}">More info about ${pet.name}!</p>
-    <button class="btn btn-outline-primary readBtn" data-id="${index}">Read More</button>
-    <div class="rating mt-2" data-id="${index}">
-    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-    </div>
-    <button class="btn btn-success mt-2 adoptBtn">Adopt Me</button>
-    </div>
-    `;
-    petList.appendChild(div);
-});
-
-document.querySelectorAll(".readBtn").forEach(btn => {
-    btn.addEventListener("click", e => {
-        const id = e.target.getAttribute("data-id");
-        const extra = document.getElementById(`extra${id}`);
-        extra.classList.toggle("hidden-text");
+(function(){
+    const greeting = document.getElementById("greeting");
+    const hour = new Date().getHours();
+    let greetMessage = "";
+    switch (true) {
+        case hour < 12: greetMessage = "Good morning!"; break;
+        case hour < 18: greetMessage = "Good afternoon!"; break;
+        default: greetMessage = "Good evening!";
+    }
+    if (greeting) greeting.textContent = greetMessage;
+    
+    const modeBtn = document.getElementById("modeBtn");
+    const body = document.body;
+    if (!body.classList.contains("day-mode") && !body.classList.contains("night-mode")) body.classList.add("day-mode"); modeBtn && modeBtn.addEventListener("click", function(){
+        body.classList.toggle("day-mode");
+        body.classList.toggle("night-mode");
+        modeBtn.textContent = body.classList.contains("night-mode") ? "Switch to Day Mode" : "Switch to Night Mode";
     });
-});
-
-document.querySelectorAll(".rating").forEach((ratingDiv, index) => {
-    const stars = ratingDiv.querySelectorAll("span");
-    stars.forEach((star, i) => {
-        star.addEventListener("click", () => {
-            stars.forEach(s => s.classList.remove("active"));
-            for (let j = 0; j <= i; j++) {
-                stars[j].classList.add("active");
-            }
-            pets[index].rating = i + 1;
-            alert(`${pets[index].name} rated ${pets[index].rating} stars!`);
+    
+    const pets = [
+        { name: "Buddy", type: "Dog", desc: "Friendly and loyal.", rating: 0, img: "images/dog1.jpg" },
+        { name: "Misty", type: "Cat", desc: "Loves to sleep all day.", rating: 0, img: "images/cat1.jpg" },
+        { name: "Coco", type: "Parrot", desc: "Talkative and colorful.", rating: 0, img: "images/parrot1.jpg" },
+        { name: "Nibbles", type: "Hamster", desc: "Cute and playful.", rating: 0, img: "images/hamster1.jpg" }
+    ];
+    
+    const petList = document.getElementById("petList");
+    function renderPetCards() {
+        petList.innerHTML = "";
+        pets.forEach((pet, index) => {
+            const div = document.createElement("div");
+            div.className = "col-md-3";
+            div.innerHTML = `
+            <div class="card p-3 text-center">
+            <img data-src="${pet.img}" class="img-fluid mb-2 lazy-img" alt="${pet.name}">
+            <h4 class="pet-name">${pet.name}</h4>
+            <p class="pet-type">${pet.type}</p>
+            <p class="pet-desc">${pet.desc}</p>
+            <p class="hidden-text" id="extra${index}">More info about ${pet.name}!</p>
+            <button class="btn btn-outline-primary readBtn" data-id="${index}">Read More</button>
+            <div class="rating mt-2" data-id="${index}">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+            <button class="btn btn-success mt-2 adoptBtn">Adopt Me</button>
+            </div>
+            `;
+            petList.appendChild(div);
         });
+    }
+    renderPetCards();
+    
+    function attachCardEvents() {
+        
+        document.querySelectorAll(".readBtn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                const id = e.target.getAttribute("data-id");
+                const extra = document.getElementById(`extra${id}`);
+                extra && extra.classList.toggle("hidden-text");
+            });
+        });
+        
+        document.querySelectorAll(".rating").forEach((ratingDiv, index) => {
+            const stars = ratingDiv.querySelectorAll("span");
+            stars.forEach((star, i) => {
+                star.addEventListener("click", () => {
+                    stars.forEach(s => s.classList.remove("active"));
+                    for (let j = 0; j <= i; j++) stars[j].classList.add("active");
+                    pets[index].rating = i + 1;
+                    alert(`${pets[index].name} rated ${pets[index].rating} stars!`);
+                });
+            });
+        });
+    }
+    attachCardEvents();
+    
+    document.getElementById("showTimeBtn").addEventListener("click", () => {
+        document.getElementById("timeDisplay").textContent = new Date().toLocaleTimeString();
     });
-});
-
-document.querySelectorAll(".adoptBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const audio = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_78f79e6eb4.mp3?filename=ding-36029.mp3");
-        audio.play();
-        alert("Thank you for adopting a pet!");
+    
+    document.getElementById("contactForm").addEventListener("submit", e => {
+        e.preventDefault();
+        document.getElementById("formMsg").textContent = "Message sent successfully!";
+        e.target.reset();
     });
-});
+    
+    window.__PAWFRIEND = { pets: pets, attachCardEvents: attachCardEvents, renderPetCards: renderPetCards };
+})();
 
-document.getElementById("showTimeBtn").addEventListener("click", () => {
-    document.getElementById("timeDisplay").textContent = new Date().toLocaleTimeString();
-});
-
-document.getElementById("contactForm").addEventListener("submit", e => {
-    e.preventDefault();
-    document.getElementById("formMsg").textContent = "Message sent successfully!";
-    e.target.reset();
+$(function(){
+    var pets = window.__PAWFRIEND.pets;
+    
+    function lazyLoadImages() {
+        $('.lazy-img').each(function(){
+            var $img = $(this);
+            if ($img.attr('src')) return;
+            var winTop = $(window).scrollTop();
+            var winBottom = winTop + $(window).height();
+            var imgTop = $img.offset().top;
+            if (imgTop < winBottom + 200) {
+                $img.attr('src', $img.data('src')).on('load', function(){ $img.addClass('loaded'); });
+            }
+        });
+    }
+    lazyLoadImages();
+    $(window).on('scroll resize', lazyLoadImages);
+    
+    function highlightText($el, query){
+        var text = $el.text();
+        if(!query) { $el.html(text); return; }
+        var re = new RegExp('('+escapeRegExp(query)+')', 'gi');
+        $el.html(text.replace(re, '<mark>$1</mark>'));
+    }
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    
+    function refreshCards(filter){
+        filter = (filter||'').trim().toLowerCase();
+        $('#petList .col-md-3').each(function(){
+            var $col = $(this);
+            var name = $col.find('.pet-name').text().toLowerCase();
+            var type = $col.find('.pet-type').text().toLowerCase();
+            if (!filter || name.indexOf(filter) !== -1 || type.indexOf(filter) !== -1) {
+                $col.show();
+                highlightText($col.find('.pet-name'), filter);
+                highlightText($col.find('.pet-type'), filter);
+                highlightText($col.find('.pet-desc'), filter);
+            }
+            else {
+                $col.hide();
+            }
+        });
+    }
+    
+    var namesList = pets.map(p => p.name);
+    
+    $('#searchInput').on('input', function(){
+        var q = $(this).val();
+        refreshCards(q);
+        if (!q) { $('#suggestions').hide().empty(); return; }
+        var suggestions = namesList.filter(n => n.toLowerCase().indexOf(q.toLowerCase()) !== -1);
+        var $s = $('#suggestions').empty();
+        suggestions.slice(0,5).forEach(function(s){
+            $s.append('<a class="list-group-item list-group-item-action">'+s+'</a>');
+        });
+        $s.toggle(suggestions.length>0);
+    });
+    
+    $('#suggestions').on('click', 'a', function(){
+        var val = $(this).text();
+        $('#searchInput').val(val);
+        $('#suggestions').hide().empty();
+        refreshCards(val);
+    });
+    
+    $('#clearSearch').on('click', function(){
+        $('#searchInput').val('');
+        refreshCards('');
+        $('#suggestions').hide().empty();
+    });
+    
+    $(window).on('scroll resize', function(){
+        var docH = $(document).height() - $(window).height();
+        var sc = $(window).scrollTop();
+        var pct = docH>0 ? Math.round((sc/docH)*100) : 0;
+        $('#progressBar').css('width', pct + '%');
+    });
+    
+    function animateCounter($el, target){
+        $({count: 0}).animate({count: target}, {
+            duration: 1500,
+            easing: 'swing',
+            step: function(now){
+                $el.text(Math.floor(now));
+            },
+            complete: function(){ $el.text(target); }
+        });
+    }
+    
+    var $happy = $('#happyCounter');
+    var target = parseInt($happy.data('target')) || 500;
+    animateCounter($happy, target);
+    
+    $('#contactForm').on('submit', function(e){
+        e.preventDefault();
+        $('#spinnerOverlay').show();
+        setTimeout(function(){
+            $('#spinnerOverlay').hide();
+            $('#formMsg').text('Message sent successfully!');
+            showNotify('Message sent successfully!');
+            $('#contactForm')[0].reset();
+        }, 900);
+    });
+    
+    function showNotify(text){
+        var $n = $('#notify');
+        $n.stop(true).text(text).fadeIn(200).delay(1800).fadeOut(600);
+    }
+    
+    $('#copyBtn').on('click', function(){
+        var txt = $('#siteUrl').text();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(txt).then(function(){ showNotify('Link copied to clipboard!'); }, function(){ fallbackCopy(txt); });
+        } else fallbackCopy(txt);
+    });
+    
+    function fallbackCopy(text){
+        var $ta = $('<textarea>').val(text).appendTo('body').select();
+        try { document.execCommand('copy'); showNotify('Link copied to clipboard!'); } catch(e){ showNotify('Copy failed'); }
+        $ta.remove();
+    }
+    
+    lazyLoadImages();
+    
+    window.__PAWFRIEND.attachCardEvents();
 });
