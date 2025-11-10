@@ -157,3 +157,13 @@ mark {
     color: #f8f9fa;
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
+
+.navbar-offset {
+    padding-top: 80px;
+}
+
+@media (max-width: 991px) {
+    .navbar-offset {
+        padding-top: 95px;
+    }
+}
