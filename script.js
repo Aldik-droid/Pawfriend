@@ -1,34 +1,4 @@
-$(function() {
-    $(window).on('load', function() {
-        $('#loader').fadeOut(500, function(){
-            $(this).remove();
-        });
-    });
-
-    setTimeout(function(){
-        $('#loader').fadeOut(500, function(){
-            $(this).remove();
-        });
-    }, 2000);
-
-    const hour = new Date().getHours();
-    const greeting =
-    hour < 12 ? "Good morning!" :
-    hour < 18 ? "Good afternoon!" :
-    "Good evening!";
-    $("#greeting").text(greeting);
-    
-    const savedMode = localStorage.getItem('mode') || 'day';
-    $("body").addClass(savedMode + "-mode");
-    $("#modeBtn").text(savedMode === "day" ? "Switch to Night Mode" : "Switch to Day Mode");
-    
-    $("#modeBtn").on("click", function() {
-        $("body").toggleClass("day-mode night-mode");
-        const newMode = $("body").hasClass("night-mode") ? "night" : "day";
-        localStorage.setItem("mode", newMode);
-        $(this).text(newMode === "day" ? "Switch to Night Mode" : "Switch to Day Mode");
-    });
-    
+$(function () {
     const pets = [
         { name: "Buddy", type: "Dog", desc: "Friendly and loyal.", img: "images/dog1.jpg" },
         { name: "Misty", type: "Cat", desc: "Loves to sleep all day.", img: "images/cat1.jpg" },
@@ -36,48 +6,87 @@ $(function() {
         { name: "Nibbles", type: "Hamster", desc: "Cute and playful.", img: "images/hamster1.jpg" }
     ];
     
-    pets.forEach((pet, index) => {
+    const petList = $('#petList');
+    pets.forEach((pet, i) => {
         const card = `
-        <div class="col-md-3 col-sm-6">
-            <div class="card p-3 text-center shadow-sm">
-                <img src="${pet.img}" alt="${pet.type}">
+        <div class="col-md-3">
+            <div class="card">
+                <img src="${pet.img}" class="img-fluid rounded mb-2" alt="${pet.name}">
                 <h4>${pet.name}</h4>
+                <p>${pet.type}</p>
                 <p>${pet.desc}</p>
-                <p id="extra${index}" class="hidden-text">More info about ${pet.name}!</p>
-                <button class="btn btn-outline-primary readBtn" data-id="${index}">Read More</button>
-                <div class="rating mt-2" data-id="${index}">
-                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                </div>
-                <button class="btn btn-success mt-2 adoptBtn">Adopt Me</button>
+                <button class="btn btn-outline-warning adoptBtn"
+                data-bs-toggle="modal"
+                data-bs-target="#adoptionModal"
+                data-pet-name="${pet.name}">Adopt me</button>
             </div>
         </div>`;
-        $("#petList").append(card);
+        petList.append(card);
     });
     
-    $(document).on("click", ".readBtn", function() {
-        const id = $(this).data("id");
-        const $extra = $("#extra" + id);
-        $extra.toggleClass("hidden-text");
-        $(this).text($extra.hasClass("hidden-text") ? "Read More" : "Hide");
-    });
+    const adoptionModal = document.getElementById('adoptionModal');
+    if (adoptionModal) {
+        adoptionModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const petName = button.getAttribute('data-pet-name');
+            
+            const modalTitle = adoptionModal.querySelector('#petNameInModal');
+            const petToAdoptField = adoptionModal.querySelector('#petToAdopt');
+            
+            modalTitle.textContent = petName;
+            petToAdoptField.value = petName;
+        });
+    }
     
-    $(document).on("click", ".rating span", function() {
-        const $star = $(this);
-        const $rating = $star.parent();
-        const index = $rating.find("span").index($star);
-        $rating.find("span").removeClass("active");
-        $rating.find("span:lt(" + (index + 1) + ")").addClass("active");
-    });
-    
-    $('.adoptBtn').on("click", function() {
-        const audio = new Audio('sounds/cat-meow.mp3');
-        audio.play();
+    $('#adoptionForm').on('submit', function(event) {
+        const form = this;
+        event.preventDefault();
+        event.stopPropagation();
+        
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
 
-        $('#adoptMsg').fadeIn(300).delay(1500).fadeOut(500);
+        form.classList.remove('was-validated');
+        
+        $('#adoptionFormMsg').text(`Application for ${$('#petToAdopt').val()} received! We will be in touch soon. `).css('color', 'lightgreen');
+        
+        form.reset();
+
+        setTimeout(() => {
+            $('#adoptionModal').modal('hide');
+            $('#adoptionFormMsg').empty();
+        }, 4000);
     });
     
-    $("#showTimeBtn").on("click", function() {
-        $("#timeDisplay").text(new Date().toLocaleTimeString());
+    $('#searchInput').on('input', function () {
+        const query = $(this).val().toLowerCase();
+        
+        $('#petList .card').each(function () {
+            const card = $(this);
+            const nameEl = card.find('h4');
+            nameEl.html(nameEl.text());
+    
+            if (query) {
+                const highlighted = nameEl.text().replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
+                nameEl.html(highlighted);
+            }
+            
+            card.toggle(card.text().toLowerCase().includes(query));
+        });
+    });
+    
+    const modeBtn = $('#modeBtn');
+    let mode = localStorage.getItem('mode') || 'day';
+    if (mode === 'night') $('body').addClass('night-mode');
+    modeBtn.text(mode === 'night' ? '🌜' : '🌞');
+    
+    modeBtn.on('click', function () {
+        $('body').toggleClass('night-mode');
+        mode = $('body').hasClass('night-mode') ? 'night' : 'day';
+        localStorage.setItem('mode', mode);
+        modeBtn.text(mode === 'night' ? '🌜' : '🌞');
     });
     
     (() => {
@@ -89,55 +98,56 @@ $(function() {
             form.addEventListener('submit', event => {
                 event.preventDefault();
                 event.stopPropagation();
-
-                if(!form.checkValidity()) {
+                if (!form.checkValidity()) {
                     form.classList.add('was-validated');
                     return;
                 }
-                
-                $('#formMsg').text('Message sent successfully!');
-                
+                $('#formMsg').text('Message sent successfully! ✅').css('color', 'lightgreen');
                 form.reset();
                 form.classList.remove('was-validated');
             }, false);
         });
     })();
+
+});
+
+// script.js: ДОБАВИТЬ ЭТОТ КОД В КОНЕЦ ФАЙЛА
+
+// Donation Modal Logic
+$('#donationAmount').on('change', function() {
+    if ($(this).val() === 'custom') {
+        $('#customAmountField').show();
+        $('#customAmount').prop('required', true);
+    } else {
+        $('#customAmountField').hide();
+        $('#customAmount').prop('required', false);
+    }
+});
+
+$('#donationForm').on('submit', function(event) {
+    const form = this;
+    event.preventDefault();
+    event.stopPropagation();
     
-    $('#searchInput').on('input', function () {
-        const query = $(this).val().toLowerCase();
-        
-        $('#petList .card').each(function () {
-            const $card = $(this);
-            const nameEl = $card.find('h4');
-            const descEl = $card.find('p').first();
-            
-            nameEl.html(nameEl.text());
-            descEl.html(descEl.text());
-            
-            if (query) {
-                const nameText = nameEl.text();
-                const descText = descEl.text();
-                
-                const highlightedName = nameText.replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
-                const highlightedDesc = descText.replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
-                
-                nameEl.html(highlightedName);
-                descEl.html(highlightedDesc);
-            }
-            
-            const match = $card.text().toLowerCase().includes(query);
-            $card.toggle(match);
-        });
-    });
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+    }
     
-    $('#copyBtn').on('click', function() {
-        const pageUrl = window.location.href;
-        navigator.clipboard.writeText(pageUrl).then(() => {
-            $('#copyMsg').text('Page URL copied');
-            setTimeout(() => $('#copyMsg').text(''), 2000);
-        })
-        .catch(() => {
-            $('#copyMsg').text('Copy failed');
-        });
-    });
+    form.classList.remove('was-validated'); 
+    
+    let amount = $('#donationAmount').val();
+    if (amount === 'custom') {
+        amount = $('#customAmount').val();
+    }
+    
+    $('#donationFormMsg').text(`Thank you for your generous ${amount}$ donation! We appreciate your support.`).css('color', 'lightgreen');
+    
+    form.reset();
+    $('#customAmountField').hide();
+    
+    setTimeout(() => {
+        $('#donationModal').modal('hide');
+        $('#donationFormMsg').empty(); 
+    }, 4000);
 });

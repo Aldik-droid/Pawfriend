@@ -1,85 +1,143 @@
 body {
-    font-family: Arial, sans-serif;
-    transition: background-color 0.4s ease, color 0.4s ease;
-    margin-top: 4px;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.3s, color 0.3s;
+  padding-top: 0;
 }
 
-.carousel-item img {
-    height: 700px;
+.navbar .nav-link {
+  margin: 0 10px;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+  color: #ffc107 !important;
+}
+
+.day-mode #whyAdopt {
+  background-color: #f4f6f8;
+  color: #212529;
+}
+
+.day-mode #whyAdopt .card {
+  background-color: #ffffff;
+  color: #040505;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.night-mode #whyAdopt {
+    background-color: #2b2d42;
+    color: #e0e6ed;
+}
+
+.night-mode #whyAdopt .card {
+  background-color: #e5ecfa;
+  color: #090a0a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.night-mode #whyAdopt .card:hover {
+  background-color: #f5f7fc;
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.1);
+}
+
+.hero {
+  background: linear-gradient(rgba(43,45,66,0.8), rgba(43,45,66,0.8)), url('images/banner1.jpg') center/cover no-repeat;
+  padding: 120px 0;
+}
+
+#petCarousel img {
+    width: 100%;
+    height: 500px;
     object-fit: cover;
+    border-radius: 10px
 }
 
-.day-mode {
-    background-color: #f8f9fa;
+.contact {
+  background: #2b2d42;
+}
+
+.day-mode #visionTeam .card {
+    background-color: #ffffff;
     color: #212529;
+    border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.night-mode {
-    background-color: #141414;
-    color: #f3f3f3;
-}
-
-.navbar, .bg-dark {
-    transition: background-color 0.4s ease;
+.night-mode #visionTeam .card {
+    background-color: #e6e9fd;
+    color: #212529;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .card {
-    transition: transform 0.25s ease, background-color 0.4s ease, color 0.4s ease;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s;
 }
 
 .card:hover {
-    transform: scale(1.03);
+  transform: scale(1.03);
 }
 
-.rating span {
-    font-size: 20px; cursor: pointer; color: gray;
+.footer img {
+  margin: 0 5px;
+  filter: invert(1);
+  transition: transform 0.2s;
+}
+.footer img:hover {
+  transform: scale(1.1);
 }
 
-.rating span.active {
-    color: gold;
+.btn-warning {
+  background-color: #f78c40;
+  border: none;
+}
+.btn-warning:hover {
+  background-color: #e67a29;
 }
 
-.hidden-text {
-    display: none;
+.text-warning {
+  color: #f78c40 !important;
 }
 
-#petList .card {
-    background-color: inherit;
-    color: inherit;
-    border: 1px solid rgba(0,0,0,0.08);
+.day-mode {
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.night-mode {
+  background-color: #2b2d42;
+  color: #f9f9f9;
 }
 
 mark {
-    background-color: yellow;
-    color: black;
-    padding: 0 2px;
-    border-radius: 3px;
+  background-color: yellow;
+  padding: 0 2px;
+  border-radius: 3px;
 }
 
-#suggestions .list-group-item {
-    cursor: pointer;
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  .hero p {
+    font-size: 1rem;
+  }
 }
 
-#spinnerOverlay {
-    position: fixed; left:0; top:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.6); z-index:2000;
+#whyAdopt .card {
+  transition: all 0.3s ease-in-out;
+  border-radius: 15px;
 }
 
-body.night-mode #spinnerOverlay {
-    background: rgba(0,0,0,0.4);
+#whyAdopt .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
-#notify {
-    position: fixed; right: 20px; bottom: 30px; background: #28a745; color: white; padding: 12px 18px; border-radius: 8px; z-index: 3000; box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-body.night-mode #notify {
-    background: #17a2b8; color: #fff;
-}
-
-.lazy-img {
-    opacity: 0; transition: opacity 0.4s ease;
-}
-
-.lazy-img.loaded {
-    opacity: 1;
+#whyAdopt .icon img {
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
 }
