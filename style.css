@@ -141,3 +141,19 @@ mark {
 #whyAdopt .icon img {
   filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
 }
+
+.day-mode #apiFactSection {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.night-mode #apiFactSection {
+    background-color: #2b2d42;
+    color: #e0e6ed;
+}
+
+.night-mode #apiFactSection .card {
+    background-color: #212535;
+    color: #f8f9fa;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}

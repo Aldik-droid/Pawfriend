@@ -60,22 +60,35 @@ $(function () {
         }, 4000);
     });
     
-    $('#searchInput').on('input', function () {
-        const query = $(this).val().toLowerCase();
+function filterPets(query) {
+    localStorage.setItem('lastSearchQuery', query);
+
+    $('#petList .card').each(function () {
+        const card = $(this);
+        const nameEl = card.find('h4');
         
-        $('#petList .card').each(function () {
-            const card = $(this);
-            const nameEl = card.find('h4');
-            nameEl.html(nameEl.text());
-    
-            if (query) {
-                const highlighted = nameEl.text().replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
-                nameEl.html(highlighted);
-            }
-            
+        nameEl.html(nameEl.text());
+
+        if (query) {
+            const highlighted = nameEl.text().replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
+            nameEl.html(highlighted);
             card.toggle(card.text().toLowerCase().includes(query));
-        });
+        } else {
+            card.show();
+        }
     });
+}
+
+$('#searchInput').on('input', function () {
+    const query = $(this).val().toLowerCase();
+    filterPets(query);
+});
+
+const lastQuery = localStorage.getItem('lastSearchQuery');
+if (lastQuery) {
+    $('#searchInput').val(lastQuery);
+    filterPets(lastQuery);
+}
     
     const modeBtn = $('#modeBtn');
     let mode = localStorage.getItem('mode') || 'day';
@@ -89,7 +102,7 @@ $(function () {
         modeBtn.text(mode === 'night' ? '🌜' : '🌞');
     });
     
-function validatePassword(password) {
+    function validatePassword(password) {
     const minLength = /.{8,}/;
     const upperCase = /[A-Z]/;
     const number = /[0-9]/;
@@ -261,6 +274,24 @@ updateNavBar();
     })();
 
 }); 
+
+function fetchCatFact() {
+    $.ajax({
+        url: 'https://catfact.ninja/fact',
+        method: 'GET',
+        success: function(data) {
+            $('#catFactText').text(`"${data.fact}"`);
+        },
+        error: function() {
+            $('#catFactText').text('Oops! Could not load a fun fact right now. (API Error)');
+        }
+    });
+}
+
+if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+    fetchCatFact();
+}
+
 $('#donationAmount').on('change', function() {
     if ($(this).val() === 'custom') {
         $('#customAmountField').show();
